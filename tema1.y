@@ -20,15 +20,10 @@ declaratie_globala : TIP ID
                    | TIP ID '(' ')'
                    ;
 
-lista_param        : param
-                   | lista_param ',' param
-                   ;
-param              : TIP ID
-                   ;
 
 /* FUNCTII */
-functii            : TIP ID '(' lista_param ')' functie 
-                   | functii TIP ID '(' lista_param ')' functie 
+functii            : TIP ID '(' ')' functie 
+                   | functii TIP ID '(' ')' functie 
                    | /*EPSILON*/
                    ;
 
