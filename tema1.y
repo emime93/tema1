@@ -22,9 +22,12 @@ declaratie_globala : TIP ID
 
 
 /* FUNCTII */
-functii            : TIP ID '(' ')' functie 
-                   | functii TIP ID '(' ')' functie 
+functii            : TIP ID '(' lista_param ')' functie 
+                   | functii TIP ID '(' lista_param ')' functie 
                    | /*EPSILON*/
+                   ;
+lista_param        : declaratie_globala 
+                   | lista_param ',' declaratie_globala
                    ;
 
 functie            : BGIN declaratii_locale lista_instructiuni END
