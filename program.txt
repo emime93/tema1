@@ -1,0 +1,17 @@
+intreg _numar;
+caracter _array[20][20];
+propozitie _functie_();
+intreg _returneazaIntreg(intreg _numar[25]);
+
+intreg _functie(intreg _c) start_functie
+caracter _C;
+_C = 22;
+_functie();
+sfarsit_functie
+
+
+start_functie
+caracter _C;
+_C = 22;
+_functie();
+sfarsit_functie
