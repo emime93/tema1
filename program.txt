@@ -1,17 +1,63 @@
-intreg _numar;
+@add<stdio.h>
+@add<stdio.h>
+@add<iostream.h>
+@define MAX 300
+
+structura _salut {
+	
+}
+clasa _o_clasa {
+	caracter _c;
+	//salut
+}
+
+const intreg _numar;
 caracter _array[20][20];
-propozitie _functie_();
+sir _functie_();
+intreg _functie1(intreg _c, sir _p,intreg _D,caracter _c);
 intreg _returneazaIntreg(intreg _numar[25]);
+//salut
 
-intreg _functie(intreg _c) start_functie
-caracter _C;
-_C = 22;
-_functie();
-sfarsit_functie
+intreg _o_clasa : _o_functie() @{
+
+return _c;
+}@
 
 
-start_functie
-caracter _C;
-_C = 22;
-_functie();
-sfarsit_functie
+
+intreg _functie(intreg _C) @{
+	caracter _C;
+	_C = 22 + _C;
+	_functie(32,32,3+2,45-12,_id+3,MAX);
+	//merge
+
+	daca (!_c ^ _c | _c == 23) {
+	//tare
+	//super tare rau de tot
+	}
+	altfel {
+
+	}
+
+	pentru (_i = 33; _i <= 45; _i++) {
+	
+	}
+
+}@
+
+intreg _main()@{
+	
+	caracter _C;
+	[ _s _s1 (12,33) ];
+
+	_C = 22;
+	_functie();
+
+	cat_timp (_i <= 22) {
+	_c++;
+	_c--;
+	_c=++(_i+3);
+	}
+
+return 0;
+}@
