@@ -3,12 +3,28 @@
 extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;
+char varDeclarateGl[250][250];
+
+int k;
+int i;
+int ok = 1;
+int verifica(char *var,char* tip){
+      for(i=1;i<=k;++i) if(strcmp(varDeclarateGl[i],var) == 0) {printf("%s %s de la linia %d a mai fost declarata\n",tip,var,yylineno);ok = 0;return 0;}
+      strcpy(varDeclarateGl[++k],var);
+return 1;     
+}
 %}
+%union 
+{
+        int number;
+        char *string;
+}
+%type <string> ID
 %token ID TIP BGIN END ASSIGN NR DEF MCRO LIB IFF ELSEE FOR WHILE CMP_OP_ING INC_DEC CMP_OP_EG STRUCT RETURN COMM
 %start program
 %%
-program            : bloc_de_start structuri declaratii_globale functii {printf("program corect sintactic\n");}
-                   | bloc_de_start declaratii_globale functii {printf("program corect sintactic\n");}
+program            : bloc_de_start structuri declaratii_globale functii {if(ok)printf("program corect sintactic\n"); else printf("programul nu este corect\n");}
+                   | bloc_de_start declaratii_globale functii {if(ok)printf("program corect sintactic\n"); else printf("programul nu este corect\n");}
                    ;
 
 /* DECLARATII GLOBALE */
@@ -27,21 +43,28 @@ declaratii_globale : declaratie_globala ';'
                    | declaratii_globale COMM
                    ;
 
-declaratie_globala : TIP ID
-                   | TIP ID '[' NR ']'
+declaratie_globala : TIP ID {verifica($2,"variabila");}
+                   | TIP ID '[' NR ']' {verifica($2,"variabila");
+                              }
+                   | TIP ID '[' NR ']' '[' NR ']' {verifica($2,"variabila");}
+                   | tip_functie
+                   ;
+
+tip_functie        : TIP ID '(' ')' {verifica($2,"functia");}
+                   | TIP ID '(' lista_param_decl ')' {verifica($2,"functia");}
+                   | TIP ID ':' ID '(' ')' 
+                   | TIP ID ':' ID '(' lista_param_decl ')' 
+                   ;
+
+param_decl         : TIP ID 
+                   | TIP ID '[' NR ']' 
                    | TIP ID '[' NR ']' '[' NR ']'
                    | tip_functie
                    ;
 
-tip_functie        : TIP ID '(' ')'
-                   | TIP ID '(' lista_param_decl ')'
-                   | TIP ID ':' ID '(' ')'
-                   | TIP ID ':' ID '(' lista_param_decl ')'
-                   ;
+lista_param_decl   : param_decl
+                   | lista_param_decl ',' param_decl
 
-lista_param_decl   : declaratie_globala
-                   | lista_param_decl ',' declaratie_globala
-                   ;
 
 expresie           : e '+' e
                    | e '*' e
@@ -73,8 +96,8 @@ declaratii_locale  : declaratie_locala ';'
                    ;
 
 declaratie_locala  : TIP ID 
-                   | TIP ID '[' NR ']'
-                   | TIP ID '[' NR ']' '[' NR ']'
+                   | TIP ID '[' NR ']' 
+                   | TIP ID '[' NR ']' '[' NR ']' 
                    | /* Epsilon */
                    ;
 
@@ -108,6 +131,10 @@ instructiune_ctrl  : IFF '(' list_exp ')' '{' lista_instructiuni '}' ELSEE '{' '
                    | IFF '(' list_exp ')' '{' '}' ELSEE '{' lista_instructiuni '}'
                    | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING NR ';' ID INC_DEC')' '{' lista_instructiuni '}'
                    | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING NR ';' ID INC_DEC')' '{' '}'
+                   | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING ID ';' ID INC_DEC')' '{' lista_instructiuni '}'
+                   | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING ID ';' ID INC_DEC')' '{' '}'
+                   | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING MCRO ';' ID INC_DEC')' '{' lista_instructiuni '}'
+                   | FOR '(' ID ASSIGN NR ';' ID CMP_OP_ING MCRO ';' ID INC_DEC')' '{' '}'
                    | WHILE '(' ID CMP_OP_ING NR ')' '{' lista_instructiuni '}'
                    | WHILE '(' ID CMP_OP_ING NR ')' '{' '}'
                    | WHILE '(' ID CMP_OP_EG NR ')' '{' lista_instructiuni '}'
@@ -125,6 +152,11 @@ exp                : '!' ID
                    | ID operator ID
                    | '!' ID operator NR
                    | '!' ID operator ID
+                   | MCRO
+                   | '!' MCRO
+                   | MCRO operator ID
+                   | ID operator MCRO
+                   | NR operator ID
                    ;
                    
 operator           : CMP_OP_ING
@@ -147,9 +179,9 @@ structuri          : structura
                    | structuri structura
                    ;
 
-structura          : STRUCT ID '{' '}' 
-                   | STRUCT ID '{' declaratii_globale '}'
-                   | STRUCT ID '{' declaratii_globale functii '}'
+structura          : STRUCT ID '{' '}' {verifica($2,"structura");}
+                   | STRUCT ID '{' declaratii_globale '}' {verifica($2,"structura");}
+                   | STRUCT ID '{' declaratii_globale functii '}' {verifica($2,"structura");}
                    ;
 %%
 int yyerror(char * s){

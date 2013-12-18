@@ -2,10 +2,14 @@
 #include <stdio.h>
 #include "y.tab.h"
 %}
+%x S
 %%
+"/*" {BEGIN S;}
+<S>[^"*/"] {}
+<S>"*/" {BEGIN 0;return COMM;}
 "@add"<[a-z]+".h"> {return LIB;}
 "@define" {return DEF;}
-"intreg"|"real"|"caracter"|"sir"|"const intreg"|"const caracter"|"const real"|"const intreg" {return TIP;}
+"intreg"|"real"|"caracter"|"sir"|"const intreg"|"const caracter"|"const real"|"const intreg"|"vid" {return TIP;}
 "@{" {return BGIN;}
 "}@" {return END;}
 "daca" {return IFF;}
@@ -19,7 +23,7 @@
 == {return CMP_OP_EG;}
 "++"|"--" {return INC_DEC;}
 [A-Z]+ {return MCRO;}
-_[_a-zA-Z][_a-zA-Z0-9]* {return ID;}
+_[_a-zA-Z][_a-zA-Z0-9]* {yylval.string=strdup(yytext);return ID;}
 "=" {return ASSIGN;}
 [0-9]+ {return NR;}
 [ \t] ;

@@ -31,7 +31,13 @@ intreg _functie(intreg _C) @{
 	_functie(32,32,3+2,45-12,_id+3,MAX);
 	//merge
 
-	daca (!_c ^ _c | _c == 23) {
+	/*
+	dsa
+	dasdas
+	dsa
+	*/
+
+	daca (!_c ^ _c | _c == MAX) {
 	//tare
 	//super tare rau de tot
 	}
@@ -39,7 +45,7 @@ intreg _functie(intreg _C) @{
 
 	}
 
-	pentru (_i = 33; _i <= 45; _i++) {
+	pentru (_i = 33; _i <= MAX; _i++) {
 	
 	}
 
@@ -48,6 +54,7 @@ intreg _functie(intreg _C) @{
 intreg _main()@{
 	
 	caracter _C;
+
 	[ _s _s1 (12,33) ];
 
 	_C = 22;
